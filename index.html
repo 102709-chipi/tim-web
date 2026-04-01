@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tim Morera Benitez — Creative Software Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #ffffff;
+    --black: #0e0e0e;
+    --yellow: #f5c400;
+    --yellow-dim: #f5c40022;
+    --gray: #f2f2f0;
+    --gray-mid: #d4d4d0;
+    --gray-dark: #888880;
+    --text: #0e0e0e;
+    --text-muted: #555550;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.6;
+    cursor: default;
+  }
+
+  /* LANGUAGE SWITCHING */
+  .lang-en { display: none; }
+  body.en .lang-nl { display: none; }
+  body.en .lang-en { display: revert; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 3rem;
+    background: var(--white);
+    border-bottom: 1.5px solid var(--black);
+  }
+
+  .nav-logo {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .nav-logo span { color: var(--yellow); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    align-items: center;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--yellow); }
+
+  .lang-toggle {
+    display: flex;
+    border: 1.5px solid var(--black);
+    overflow: hidden;
+  }
+
+  .lang-toggle button {
+    padding: 0.3rem 0.7rem;
+    border: none;
+    background: transparent;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .lang-toggle button.active {
+    background: var(--black);
+    color: var(--white);
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 3rem 4rem;
+    border-bottom: 1.5px solid var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--gray-dark);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    max-width: 900px;
+  }
+
+  .hero h1 .yellow { color: var(--yellow); }
+  .hero h1 .outline {
+    -webkit-text-stroke: 2px var(--black);
+    color: transparent;
+  }
+
+  .hero-sub {
+    margin-top: 2.5rem;
+    max-width: 480px;
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.75rem 1.75rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: 1.5px solid var(--black);
+  }
+
+  .btn-primary {
+    background: var(--yellow);
+    color: var(--black);
+  }
+
+  .btn-primary:hover {
+    background: var(--black);
+    color: var(--yellow);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--black);
+  }
+
+  .btn-outline:hover {
+    background: var(--black);
+    color: var(--white);
+  }
+
+  .hero-deco {
+    position: absolute;
+    bottom: 3rem;
+    right: 3rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gray-mid);
+    writing-mode: vertical-rl;
+    letter-spacing: 0.15em;
+  }
+
+  .hero-grid {
+    position: absolute;
+    top: 0; right: 0;
+    width: 380px;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .hero-grid div {
+    border: 1px solid var(--black);
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 5rem 3rem;
+    border-bottom: 1.5px solid var(--black);
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--gray-dark);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 3rem;
+  }
+
+  .section-title .accent { color: var(--yellow); }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+
+  .about-facts {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .fact-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--gray-mid);
+  }
+
+  .fact-row:first-child { border-top: 1px solid var(--gray-mid); }
+
+  .fact-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gray-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .fact-value {
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-align: right;
+  }
+
+  /* SKILLS waar ik goed in ben */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1.5px solid var(--black);
+  }
+
+  .skill-group {
+    padding: 1.5rem;
+    border-right: 1.5px solid var(--black);
+  }
+
+  .skill-group:last-child { border-right: none; }
+
+  .skill-group-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--gray-dark);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .skill-tag {
+    padding: 0.3rem 0.65rem;
+    border: 1.5px solid var(--black);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    background: var(--white);
+  }
+
+  .skill-tag.learning {
+    background: var(--yellow-dim);
+    border-color: var(--yellow);
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border: 1.5px solid var(--black);
+  }
+
+  .project-card {
+    padding: 2rem;
+    border-right: 1.5px solid var(--black);
+    border-bottom: 1.5px solid var(--black);
+    position: relative;
+    transition: background 0.2s;
+  }
+
+  .project-card:hover { background: var(--gray); }
+
+  .project-card:nth-child(even) { border-right: none; }
+  .project-card:nth-last-child(-n+2) { border-bottom: none; }
+
+  .project-type {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray-dark);
+    margin-bottom: 0.75rem;
+  }
+
+  .project-card h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .project-card p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .project-techs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .tech-pill {
+    padding: 0.2rem 0.5rem;
+    background: var(--black);
+    color: var(--white);
+    font-size: 0.7rem;
+    font-weight: 700;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* CURRENTLY WORKING ON */
+  .working-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1.5px solid var(--black);
+  }
+
+  .working-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.5rem 2rem;
+    border-bottom: 1.5px solid var(--black);
+  }
+
+  .working-item:last-child { border-bottom: none; }
+
+  .working-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--yellow);
+    border: 2px solid var(--black);
+    margin-top: 0.4rem;
+    flex-shrink: 0;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(245, 196, 0, 0.5); }
+    50% { box-shadow: 0 0 0 6px rgba(245, 196, 0, 0); }
+  }
+
+  .working-content h3 {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .working-content p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+  }
+
+  /* CONTACT */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .contact-text {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1.5px solid var(--black);
+  }
+
+  .contact-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    text-decoration: none;
+    color: var(--text);
+    border-bottom: 1.5px solid var(--black);
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+  }
+
+  .contact-link:last-child { border-bottom: none; }
+  .contact-link:hover { background: var(--yellow); }
+
+  .contact-link .contact-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--gray-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .contact-link:hover .contact-label { color: var(--black); }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gray-dark);
+    letter-spacing: 0.08em;
+  }
+
+  /* RESPONSIVE maken */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 3rem 1.5rem; }
+    .hero { padding: 7rem 1.5rem 3rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .skill-group { border-right: none; border-bottom: 1.5px solid var(--black); }
+    .skill-group:last-child { border-bottom: none; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card { border-right: none !important; border-bottom: 1.5px solid var(--black) !important; }
+    .project-card:last-child { border-bottom: none !important; }
+    .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">T<span>.</span>MB</div>
+  <ul class="nav-links">
+    <li><a href="#about"><span class="lang-nl">Over mij</span><span class="lang-en">About</span></a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects"><span class="lang-nl">Projecten</span><span class="lang-en">Projects</span></a></li>
+    <li><a href="#working"><span class="lang-nl">Bezig met</span><span class="lang-en">Working on</span></a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li>
+      <div class="lang-toggle">
+        <button class="active" onclick="setLang('nl')">NL</button>
+        <button onclick="setLang('en')">EN</button>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid">
+    <div></div><div></div><div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div><div></div><div></div>
+  </div>
+
+  <p class="hero-tag">Creative Software Developer — Zoetermeer, NL</p>
+
+  <h1>
+    Tim<br>
+    <span class="outline">Morera</span><br>
+    <span class="yellow">Benitez</span>
+  </h1>
+
+  <p class="hero-sub lang-nl">
+    19 jaar. Front-end developer met een passie voor het bouwen van mooie, werkende dingen op het web — en steeds verder leren in Unity en back-end.
+  </p>
+  <p class="hero-sub lang-en">
+    19 years old. Front-end developer with a passion for building beautiful, working things on the web — and continuously learning Unity and back-end.
+  </p>
+
+  <div class="hero-actions">
+    <a href="CV-timmorerabenitez.pdf" download="CV-Tim-Morera-Benitez.pdf" class="btn btn-primary lang-nl">Download CV</a>
+    <a href="CV-timmorerabenitez.pdf" download="CV-Tim-Morera-Benitez.pdf" class="btn btn-primary lang-en">Download CV</a>
+    <a href="#contact" class="btn btn-outline lang-nl">Neem contact op</a>
+    <a href="#contact" class="btn btn-outline lang-en">Get in touch</a>
+  </div>
+
+  <div class="hero-deco">AVAILABLE FOR INTERNSHIP 2026</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label lang-nl">01 — Over mij</p>
+  <p class="section-label lang-en">01 — About me</p>
+  <h2 class="section-title lang-nl">Wie ben <span class="accent">ik</span></h2>
+  <h2 class="section-title lang-en">Who am <span class="accent">I</span></h2>
+
+  <div class="about-grid">
+    <div class="about-text">
+      <p class="lang-nl">Ik ben Tim, 19 jaar oud, en ik studeer Creative Software Developer aan het Grafisch Lyceum Rotterdam. Ik werk het liefst aan de front-end, maar kan ook back-end inzetten als dat nodig is.</p>
+      <p class="lang-en">I'm Tim, 19 years old, studying Creative Software Developer at Grafisch Lyceum Rotterdam. I love working on the front-end, but I can also handle back-end when needed.</p>
+      <p class="lang-nl">Naast mijn opleiding ben ik al vijf maanden bezig met Unity en werk ik er actief aan om steeds beter te worden in game development. Ik ben gedreven, stel graag vragen en leer continu nieuwe technieken.</p>
+      <p class="lang-en">Alongside my studies, I've been working with Unity for about five months and actively improving my game development skills. I'm driven, not afraid to ask questions, and always learning new things.</p>
+      <p class="lang-nl">Mijn sterke punten: doelgericht werken, goed communiceren in een team en altijd bereid zijn om nieuwe dingen te leren.</p>
+      <p class="lang-en">My strengths: goal-oriented, strong team communication, and always willing to learn something new.</p>
+    </div>
+
+    <div class="about-facts">
+      <div class="fact-row">
+        <span class="fact-label lang-nl">Leeftijd</span>
+        <span class="fact-label lang-en">Age</span>
+        <span class="fact-value">19</span>
+      </div>
+      <div class="fact-row">
+        <span class="fact-label lang-nl">Opleiding</span>
+        <span class="fact-label lang-en">Education</span>
+        <span class="fact-value">MBO Creative Software Developer</span>
+      </div>
+      <div class="fact-row">
+        <span class="fact-label lang-nl">School</span>
+        <span class="fact-label lang-en">School</span>
+        <span class="fact-value">Grafisch Lyceum Rotterdam</span>
+      </div>
+      <div class="fact-row">
+        <span class="fact-label lang-nl">Woonplaats</span>
+        <span class="fact-label lang-en">Location</span>
+        <span class="fact-value">Zoetermeer</span>
+      </div>
+      <div class="fact-row">
+        <span class="fact-label lang-nl">Focus</span>
+        <span class="fact-label lang-en">Focus</span>
+        <span class="fact-value">Front-end & Unity</span>
+      </div>
+      <div class="fact-row">
+        <span class="fact-label lang-nl">Stage</span>
+        <span class="fact-label lang-en">Internship</span>
+        <span class="fact-value" style="color: #b58a00;">September 2026</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="section-label">02 — Skills</p>
+  <h2 class="section-title lang-nl">Wat ik <span class="accent">kan</span></h2>
+  <h2 class="section-title lang-en">What I <span class="accent">know</span></h2>
+
+  <div class="skills-grid">
+    <div class="skill-group">
+      <p class="skill-group-title">Front-end</p>
+      <div class="skill-tags">
+        <span class="skill-tag">HTML</span>
+        <span class="skill-tag">CSS</span>
+        <span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">React</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <p class="skill-group-title">Back-end</p>
+      <div class="skill-tags">
+        <span class="skill-tag">PHP</span>
+        <span class="skill-tag learning">Node.js ↗</span>
+        <span class="skill-tag learning">C# ↗</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <p class="skill-group-title">Tools & Design</p>
+      <div class="skill-tags">
+        <span class="skill-tag">Git</span>
+        <span class="skill-tag">Figma</span>
+        <span class="skill-tag">Unity</span>
+        <span class="skill-tag">Web Design</span>
+        <span class="skill-tag">Graphic Design</span>
+      </div>
+    </div>
+  </div>
+  <p class="lang-nl" style="margin-top: 1rem; font-size: 0.75rem; font-family: 'Space Mono', monospace; color: #888880;">↗ = momenteel aan het leren</p>
+  <p class="lang-en" style="margin-top: 1rem; font-size: 0.75rem; font-family: 'Space Mono', monospace; color: #888880;">↗ = currently learning</p>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label lang-nl">03 — Projecten</p>
+  <p class="section-label lang-en">03 — Projects</p>
+  <h2 class="section-title lang-nl">Wat ik heb <span class="accent">gebouwd</span></h2>
+  <h2 class="section-title lang-en">What I've <span class="accent">built</span></h2>
+
+  <div class="projects-grid">
+    <div class="project-card">
+      <p class="project-type lang-nl">School — Website</p>
+      <p class="project-type lang-en">School — Website</p>
+      <h3 class="lang-nl">Portfolio website</h3>
+      <h3 class="lang-en">Portfolio website</h3>
+      <p class="lang-nl">Een persoonlijke portfolio website gebouwd als schoolopdracht. Zelf verantwoordelijk voor zowel ontwerp als de ontwikkeling.</p>
+      <p class="lang-en">A personal portfolio website built as a school project. Responsible for both design and development.</p>
+      <div class="project-techs">
+        <span class="tech-pill">HTML</span>
+        <span class="tech-pill">CSS</span>
+        <span class="tech-pill">JavaScript</span>
+        <span class="tech-pill">Figma</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <p class="project-type lang-nl">Thuis — Game dev</p>
+      <p class="project-type lang-en">Personal — Game dev</p>
+      <h3 class="lang-nl">Unity project</h3>
+      <h3 class="lang-en">Unity project</h3>
+      <p class="lang-nl">Zelfstandig bezig met game development in Unity. Al 5 maanden actief aan het leren en bouwen.</p>
+      <p class="lang-en">Independently working on game development in Unity. Been actively learning and building for 5 months.</p>
+      <div class="project-techs">
+        <span class="tech-pill">Unity</span>
+        <span class="tech-pill">C#</span>
+      </div>
+    </div>
+
+    <div class="project-card" style="background: #f9f9f7;">
+      <p class="project-type lang-nl">School — Web app</p>
+      <p class="project-type lang-en">School — Web app</p>
+      <h3 class="lang-nl">React applicatie</h3>
+      <h3 class="lang-en">React application</h3>
+      <p class="lang-nl">Een webapplicatie gebouwd met React + Vite tijdens de opleiding. Modern en component-based opgezet.</p>
+      <p class="lang-en">A web application built with React + Vite during my studies. Set up in a modern, component-based way.</p>
+      <div class="project-techs">
+        <span class="tech-pill">React</span>
+        <span class="tech-pill">Vite</span>
+        <span class="tech-pill">JavaScript</span>
+      </div>
+    </div>
+
+    <div class="project-card" style="background: #f9f9f7; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.5rem; min-height: 200px;">
+      <p style="font-size: 2rem;">+</p>
+      <p class="lang-nl" style="font-size: 0.85rem; color: var(--gray-dark); text-align: center;">Meer projecten komen eraan</p>
+      <p class="lang-en" style="font-size: 0.85rem; color: var(--gray-dark); text-align: center;">More projects coming soon</p>
+    </div>
+  </div>
+</section>
+
+<!-- CURRENTLY WORKING ON -->
+<section id="working">
+  <p class="section-label lang-nl">04 — Momenteel bezig</p>
+  <p class="section-label lang-en">04 — Currently working on</p>
+  <h2 class="section-title lang-nl">Waar ik mee <span class="accent">bezig ben</span></h2>
+  <h2 class="section-title lang-en">What I'm <span class="accent">working on</span></h2>
+
+  <div class="working-list">
+    <div class="working-item">
+      <div class="working-dot"></div>
+      <div class="working-content">
+        <h3>Unity — Game development</h3>
+        <p class="lang-nl">Al 5 maanden actief bezig met Unity en C#. Bouw zelfstandig aan een game project en leer steeds meer over game mechanics en 3D development.</p>
+        <p class="lang-en">Actively working on Unity and C# for 5 months now. Building a game project independently and learning more about game mechanics and 3D development.</p>
+      </div>
+    </div>
+    <div class="working-item">
+      <div class="working-dot"></div>
+      <div class="working-content">
+        <h3>C# — Backend & game scripting</h3>
+        <p class="lang-nl">Verdiep me in C# voor zowel Unity scripting als back-end development. Beginner niveau, maar groei snel.</p>
+        <p class="lang-en">Deepening my knowledge of C# for both Unity scripting and back-end development. Beginner level, but growing fast.</p>
+      </div>
+    </div>
+    <div class="working-item">
+      <div class="working-dot"></div>
+      <div class="working-content">
+        <h3 class="lang-nl">Stage zoeken — A One Man Army (AOMA)</h3>
+        <h3 class="lang-en">Internship search — A One Man Army (AOMA)</h3>
+        <p class="lang-nl">Op zoek naar een stageplek vanaf september 2026. Momenteel gericht op AOMA Esports in Zoetermeer om bij te dragen aan hun website en online presence.</p>
+        <p class="lang-en">Looking for an internship starting September 2026. Currently targeting AOMA Esports in Zoetermeer to contribute to their website and online presence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label">05 — Contact</p>
+  <h2 class="section-title lang-nl">Laten we <span class="accent">praten</span></h2>
+  <h2 class="section-title lang-en">Let's <span class="accent">talk</span></h2>
+
+  <div class="contact-grid">
+    <div>
+      <p class="contact-text lang-nl">Op zoek naar een stageplek vanaf september 2026. Ben je geïnteresseerd of wil je gewoon hallo zeggen? Stuur me een berichtje!</p>
+      <p class="contact-text lang-en">Looking for an internship starting September 2026. Interested or just want to say hello? Send me a message!</p>
+      <br>
+      <a href="CV-timmorerabenitez.pdf" download="CV-Tim-Morera-Benitez.pdf" class="btn btn-primary lang-nl" style="margin-top: 1rem;">Download CV</a>
+      <a href="CV-timmorerabenitez.pdf" download="CV-Tim-Morera-Benitez.pdf" class="btn btn-primary lang-en" style="margin-top: 1rem;">Download CV</a>
+    </div>
+
+    <div class="contact-links">
+      <a href="mailto:timmor002@gmail.com" class="contact-link">
+        <span class="contact-label lang-nl">Email</span>
+        <span class="contact-label lang-en">Email</span>
+        timmor002@gmail.com
+      </a>
+      <a href="tel:0648246674" class="contact-link">
+        <span class="contact-label lang-nl">Telefoon</span>
+        <span class="contact-label lang-en">Phone</span>
+        06 48246674
+      </a>
+      <a href="https://github.com/102709-chipi" target="_blank" class="contact-link">
+        <span class="contact-label">GitHub</span>
+        github.com/102709-chipi ↗
+      </a>
+      <a href="https://www.linkedin.com/in/tim-benitez-326182348/" target="_blank" class="contact-link">
+        <span class="contact-label">LinkedIn</span>
+        linkedin.com/in/tim-benitez-326182348/ ↗
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Tim Morera Benitez</span>
+  <span class="lang-nl">Gebouwd met HTML, CSS & JS</span>
+  <span class="lang-en">Built with HTML, CSS & JS</span>
+</footer>
+
+<script>
+  function setLang(lang) {
+    document.body.classList.toggle('en', lang === 'en');
+    document.querySelectorAll('.lang-toggle button').forEach(function(btn, i) {
+      btn.classList.toggle('active', (i === 0 && lang === 'nl') || (i === 1 && lang === 'en'));
+    });
+  }
+</script>
+
+</body>
+</html>
